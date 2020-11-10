@@ -90,5 +90,39 @@ public class AdminControlPanelSingleton
         return true; //User Group was added successfully
     }
 
+    /**
+     * Method which returns the specified user
+     * Based on the Users Name
+     * */
+    public User getUser(String userName) {
+        for(int i = 0; i < this.users.size(); i++)
+        {
+            //We found the user
+            if(this.users.get(i).getName().equals(userName))
+            {
+                return this.users.get(i);
+            }
+        }
+        //Else Return Null
+        return null;
+    }
+
+
+    /**
+     * Method Which returns the ArrayList of the Users
+     * */
+    public ArrayList<User> getUsers()
+    {
+        ArrayList<User> toReturn = new ArrayList<>();
+
+        for(User element : this.users)
+        {
+            toReturn.add(element);
+        }
+
+        //Deep copying
+        return toReturn;
+    }
+
 
 }

@@ -127,6 +127,8 @@ public class AdminControlPanel extends Application
             {
                 //Updating our tree view
                 this.makeUserBranch(userToAdd);
+                //Clearing the userIdTextArea
+                this.userIdTextArea.setText("");
             }
             //Did not add the user to the program
             else
@@ -147,6 +149,8 @@ public class AdminControlPanel extends Application
             {
                 //Updating our Tree View
                this.makeUserGroupBranch(userGroupToAdd);
+               //Clearing the GroupIdTextArea
+                this.groupIdTextArea.setText("");
             }
             //Did Not Add the User Group to the program
             else
