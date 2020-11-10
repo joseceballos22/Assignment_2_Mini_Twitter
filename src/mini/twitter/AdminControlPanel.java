@@ -8,6 +8,8 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * File:
  * Goal: To Define the Admin Panel GUI
@@ -34,10 +36,10 @@ public class AdminControlPanel extends Application
     private Button showGroupTotalButton;
     private Button showPositivePercentageButton;
 
+
     /**Private Data Fields*/
     private TreeItem<UserComponent> currentSelectedUserGroup; //Holds the Currently Selected UserGroup
     private TreeItem<UserComponent> currentSelectedUser; //Holds the Currently Selected User Initially Null
-
 
     private AdminControlPanelSingleton adminSingleton = AdminControlPanelSingleton.getInstance(); // Getting a reference to the singleton
 
@@ -58,7 +60,7 @@ public class AdminControlPanel extends Application
         this.addUserButton = new Button("Add User");
         this.groupIdTextArea = new TextArea();
         this.addGroupButton = new Button("Add Group");
-        this.openUserViewButton = new Button("Open Selected User View");
+        this.openUserViewButton = new Button("Open Selected User Panel");
         this.showUserTotalButton = new Button("Show User Total");
         this.showMessageTotalButton = new Button("Show Message Total");
         this.showGroupTotalButton = new Button("Show Group Total");
@@ -74,6 +76,7 @@ public class AdminControlPanel extends Application
         this.currentSelectedUserGroup = this.root;
 
         this.currentSelectedUser = null; //Initially Null
+
     }
 
 
@@ -106,7 +109,7 @@ public class AdminControlPanel extends Application
                         }
                         else
                         {
-                            this.currentSelectedUser = newValue; //Currently Selected User 
+                            this.currentSelectedUser = newValue; //Currently Selected User
                         }
                     }
                 });
@@ -151,6 +154,22 @@ public class AdminControlPanel extends Application
                 //User Group was Not added to the Program
                 AlertBox.display("AlertBox", "Error User Group Is Already Added\nPlease Try To Add A Unique User Group ");
             }
+        });
+
+        //Checking if the openUserViewButton was pressed
+        openUserViewButton.setOnAction(e-> {
+            //First Checking if the currentSelectedUser is valid
+            if(this.currentSelectedUser != null)
+            {
+                //Starting the userControl panel Specified
+                new UserControlPanel((User)this.currentSelectedUser.getValue()).start();
+            }
+            else
+            {
+                //Not Valid
+                AlertBox.display("AlertBox", "Please Select A User\nIn Order to go to the User Control Panel");
+            }
+
         });
 
 
