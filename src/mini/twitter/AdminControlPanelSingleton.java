@@ -6,6 +6,7 @@ package mini.twitter;
  * */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**Going to use the SingleTon Pattern
  * - So that Only One instance of the Admin Panel SingleTon can be created
@@ -21,6 +22,7 @@ public class AdminControlPanelSingleton
     private ArrayList<User> users;    //List of all the Users in the program
     private ArrayList<UserGroup> userGroups; //List of all the User Groups in the program
 
+    private HashMap<String, UserControlPanel> userControlPanels; //Used to keep a reference of all UserControlPanels Created
 
     /**SingleTon Stuff*/
     private static AdminControlPanelSingleton firstInstance = null; //Initially Null
@@ -30,6 +32,7 @@ public class AdminControlPanelSingleton
         //Initializing Private Data Fields
         this.users = new ArrayList<>();
         this.userGroups = new ArrayList<>();
+        this.userControlPanels = new HashMap<>();
     }
 
     //Returns the Only Instance of the Admin Panel Since it Incorporates the Singleton Desing Pattern
@@ -53,15 +56,19 @@ public class AdminControlPanelSingleton
      * */
     public boolean addUser(String userToAdd)
     {
+        if(userToAdd.equals(""))
+        {
+            return false;
+        }
         //Checking if the user was already added to the program
         for(UserComponent user : users)
         {
-
             if(user.getName().equals(userToAdd))
             {
                 return false; //User Already Added
             }
         }
+
         this.users.add(new User(userToAdd)); //Adding the User
 
         return true; //User was added successfully
@@ -77,6 +84,10 @@ public class AdminControlPanelSingleton
      * */
     public boolean addUserGroup(String userGroupToAdd)
     {
+        if(userGroupToAdd.equals(""))
+        {
+            return false;
+        }
         //Checking if the user userGroupToAdd Already Exists
         for(UserComponent userGroup : userGroups)
         {
@@ -107,9 +118,8 @@ public class AdminControlPanelSingleton
         return null;
     }
 
-
     /**
-     * Method Which returns the ArrayList of the Users
+     * Method Which returns the ArrayList of the Users Deep Copied
      * */
     public ArrayList<User> getUsers()
     {
@@ -119,10 +129,30 @@ public class AdminControlPanelSingleton
         {
             toReturn.add(element);
         }
-
         //Deep copying
         return toReturn;
     }
 
+    /**
+     * Method which adds a UserControlPanel to the HashMap
+     * Based on the String Name Of the User
+     * */
+    public void setUserControlPanels(String name, UserControlPanel panel)
+    {
+        this.userControlPanels.put(name, panel); //Saving a reference to that Panel based on the Name provided
+    }
+
+    /**
+     * Method Which returns the Reference to the User Control Panel
+     * Base On the String Name Of the User
+     * */
+    public UserControlPanel getUserControlPanel(String name)
+    {
+        if(name == null)
+        {
+            return null;
+        }
+        return this.userControlPanels.get(name);
+    }
 
 }

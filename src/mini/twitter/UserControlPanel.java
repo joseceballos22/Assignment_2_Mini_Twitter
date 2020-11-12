@@ -1,5 +1,7 @@
 package mini.twitter;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,11 +19,7 @@ import java.util.ArrayList;
  * */
 
 
-/**
- * UserControlPanel will also implement the Observer Interface
- * Meaning Everytime A
- * */
-public class UserControlPanel implements Observer
+public class UserControlPanel
 {
     /**Private Widget Fields */
     private TextArea followIDTextArea;
@@ -44,12 +42,6 @@ public class UserControlPanel implements Observer
     private Stage stage;
     private Scene scene;
     private Pane layout;
-
-    //UserSubject which updates all the Observers associated with this User when it makes a tweet
-    private UserSubject userSubject;
-
-    //Keeps track of the number of followers
-    private int numOfFollowers;
 
     private AdminControlPanelSingleton adminSingleton; //Used to Store a Reference to the SingleTon
 
@@ -85,9 +77,6 @@ public class UserControlPanel implements Observer
 
         this.adminSingleton = AdminControlPanelSingleton.getInstance(); //Getting a Reference to the singleton
 
-        this.userSubject = new UserSubject(); //Initializing the UserSubject So Everytime this User Makes a Tweet its observers will know
-
-        this.numOfFollowers = 0; //Initially No Users have followed this user
     }
 
     /**
@@ -129,7 +118,12 @@ public class UserControlPanel implements Observer
                     this.usersFollowing.getItems().add(userToFollow);
 
                     // Updating the userToFollow's followers ArrayList since it just got a new follower
+                    //Side Note: I Can Store this logic inside of the User Class
                     userToFollow.addNewFollower(this.user); //Since this user is now following that user
+
+                    //Now that we have followed the user we need to make this user the observer of the user it followed
+                    userToFollow.register(this.user); //This User will now receive updates when userToFollow Post something
+
                 }
                 //Else We did not follow the User because the User Was Already Following that user
                 else
@@ -137,6 +131,8 @@ public class UserControlPanel implements Observer
                     AlertBox.display("AlertBox", "Error: User Is Already Following " + userToFollow.getName());
                 }
             }
+            //Clearing the FollowIdTextArea
+            this.followIDTextArea.setText("");
 
         });
 
@@ -150,17 +146,34 @@ public class UserControlPanel implements Observer
         this.tweetButton.setOnAction(e->
         {
             /**
-             * Registering All the Observers that follow this User
+             * Everytime the Tweet Button is pressed we are going:
+             * - Get the Message to tweet
+             * - Pass that message to all the observers observing this User
+             * - Which should handle Updating the listView
              * */
+            String tweetMessage = this.tweetTextArea.getText(); //Getting the message to tweet
+            this.user.addNews(tweetMessage); //Tweeting the Message to all the Observers of this User
 
-            //Now that we sorted all
-
-
+            //Clearing the TweetTextArea After every tweet
+            this.tweetTextArea.setText("");
         });
 
         //Starting the Stage
         this.stage.show();
     }
+
+    /**
+     * Method Which adds a Item to the News Feed List View
+     *
+     * @param  newsToAdd
+     *  */
+    public void addNews(String newsToAdd)
+    {
+        this.newsFeed.getItems().add(newsToAdd); //Updating the News Feed
+    }
+
+
+
 
     //Sets the position of the widgets in the layout
     private void setWidgetPosition()
@@ -192,20 +205,5 @@ public class UserControlPanel implements Observer
         followButton.setLayoutY(470);
 
     }
-
-    /**
-     * Updates the class that implements the Observer interface
-     * Everytime its Associated Subject Updates the Data
-     * <p>
-     * Therefore When a User that this user is following post a new Message Its newsFeed gets Updated
-     *
-     * @param newMessage
-     */
-    @Override
-    public void update(String newMessage)
-    {
-
-    }
-
 
 }

@@ -12,10 +12,14 @@ import java.util.UUID;
 
 /**
  * Implementing The Observer Interface So that the news Feed is Automatically Updated Everytime
- * The UserSubject adds Some news
+ * The User it follows adds Some news
+ * */
+/**
+ * Implementing the Subject (Publisher) Interface for the User class
+ * So that everytime something gets changed in here it updates all of its observers which are also Users
  * */
 
-public class User implements UserComponent, Observer
+public class User implements UserComponent, Observer, Subject
 {
     //Every User has a Unique ID
     private UUID id;
@@ -35,8 +39,9 @@ public class User implements UserComponent, Observer
     //Gets a Reference to the Singleton Object Which contains all the Users in the program
     private AdminControlPanelSingleton adminSingleton;
 
-    //UserSubject Used to register this User with the UserSubject
-    private ArrayList<UserSubject> userSubjects;
+    //ArrayList Containing all the Observers
+    private ArrayList<Observer> observers;
+    private String news;
 
     //Initializing Private Variables
     public User(String name)
@@ -48,15 +53,9 @@ public class User implements UserComponent, Observer
         id = UUID.randomUUID(); //Creating a Random UUID
         this.adminSingleton = AdminControlPanelSingleton.getInstance(); //Getting a Reference to the Singleton Instance
 
+        this.observers = new ArrayList<>();
+        this.news = "";
 
-        this.userSubjects = new ArrayList<>(); //Not Linking Any UserSubjects with this User Initially
-    }
-
-    //Linking A User Subject with this User
-    public void linkUserSubject(UserSubject userSubject)
-    {
-        userSubject.register(this); //Registering this User As a Observer to that UserSubject and Saving it in a ArrayList
-        this.userSubjects.add(userSubject); //Linking a User Subject with this User
     }
 
 
@@ -76,6 +75,12 @@ public class User implements UserComponent, Observer
     public ArrayList<User> getFollowers()
     {
         return followers;
+    }
+
+    //Gets the newsFeed ArrayList
+    public ArrayList<String> getNewsFeed()
+    {
+        return this.newsFeed;
     }
 
 
@@ -185,6 +190,7 @@ public class User implements UserComponent, Observer
     }
 
 
+
     /**
      * Updates the class that implements the Observer interface
      * Everytime its Associated Subject Updates the Data
@@ -197,5 +203,47 @@ public class User implements UserComponent, Observer
     public void update(String newMessage)
     {
         this.newsFeed.add(newMessage); //Adding the New Message To the News Feed
+
+        /**
+         * Updating the newsFeed ListView Of this User Since it Just Got a New Message
+         * - Using the adminSingleton Reference
+         * - Only updating the ListView if the UserControlPanel Exists
+         * */
+
+        UserControlPanel userControlPanel = this.adminSingleton.getUserControlPanel(this.name);
+
+        //Ensuring this User has a ControlPanel
+        if(userControlPanel != null)
+        {
+            userControlPanel.addNews(newMessage); //Updating the ListView Of this User
+        }
+        //Else Do Nothing
+
     }
+
+    //Adds news to all the Observers causing all the observers to update
+    public void addNews(String news)
+    {
+        this.news = news; //Updating the News
+        this.notifyObserver(); //Notifying all the observers of the News
+    }
+
+
+    //Adds a Observer to the Subject so now the subject will need to notify that observer if any changes are made
+    @Override
+    public void register(Observer newObserver)
+    {
+        this.observers.add(newObserver);
+    }
+
+    //Notifies all the Observers of the Subject Of a Change
+    @Override
+    public void notifyObserver()
+    {
+        for(int i = 0; i < observers.size(); i++)
+        {
+            observers.get(i).update(this.news);
+        }
+    }
+
 }

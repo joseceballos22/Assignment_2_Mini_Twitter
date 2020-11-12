@@ -147,7 +147,7 @@ public class AdminControlPanel extends Application
             //Added the User Group to the Program
             if(isAdded)
             {
-                //Updating our Tree View
+                //Updating our Tree View Since we have a Valid User to Add
                this.makeUserGroupBranch(userGroupToAdd);
                //Clearing the GroupIdTextArea
                 this.groupIdTextArea.setText("");
@@ -166,7 +166,11 @@ public class AdminControlPanel extends Application
             if(this.currentSelectedUser != null)
             {
                 //Starting the userControl panel Specified
-                new UserControlPanel((User)this.currentSelectedUser.getValue()).start();
+                UserControlPanel panel = new UserControlPanel((User)this.currentSelectedUser.getValue());
+                //Saving the UserControlPanel in the Singleton Using the name as the key
+                this.adminSingleton.setUserControlPanels(this.currentSelectedUser.getValue().getName(), panel);
+                panel.start(); //Starting the Panel
+
             }
             else
             {
@@ -190,7 +194,9 @@ public class AdminControlPanel extends Application
      * */
     private void makeUserBranch(String name)
     {
-        TreeItem<UserComponent> userToAdd = new TreeItem<UserComponent>(new User(name));
+        //Getting the User From the AdminSingleton
+        User user = this.adminSingleton.getUser(name);
+        TreeItem<UserComponent> userToAdd = new TreeItem<UserComponent>(user);
         userToAdd.setExpanded(true);
         this.currentSelectedUserGroup.getChildren().add(userToAdd);
     }
