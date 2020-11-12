@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class UserControlPanel
     {
         /**Initializing the Private Data Fields*/
         this.followIDTextArea = new TextArea();
-        this.followIDTextArea.setPromptText("Enter The Name Of the Person To Follow Here");
+        this.followIDTextArea.setPromptText("Enter User To Follow");
 
         this.followButton = new Button("Follow User");
 
@@ -58,7 +59,7 @@ public class UserControlPanel
         this.followingLabel = new Label("Following");
 
         this.tweetTextArea = new TextArea();
-        this.tweetTextArea.setPromptText("Enter The Tweet Message Here");
+        this.tweetTextArea.setPromptText("Enter Tweet Message");
         this.tweetButton = new Button("Post Tweet");
 
         this.newsFeed = new ListView<>(); //List all the News Feed from Users Following
@@ -69,14 +70,24 @@ public class UserControlPanel
         this.stage = new Stage();
         this.layout = new Pane();
         //Linking the Layout and the Scene together
-        this.scene = new Scene(layout, 1100,800);
+        this.scene = new Scene(layout, 700,700);
         //Linking the Scene to the Stage
         this.stage.setScene(scene);
 
         this.stage.setTitle(user.getName() + "'s Control Panel");
-
         this.adminSingleton = AdminControlPanelSingleton.getInstance(); //Getting a Reference to the singleton
 
+        //Setting the Size of the Buttons
+        this.tweetButton.setMinSize(250,50);
+        this.followButton.setMinSize(250,50);
+
+        //Setting the Size of the Text Areas
+        this.tweetTextArea.setMaxSize(250,50);
+        this.followIDTextArea.setMaxSize(250,50);
+
+        //Setting the Font For the Labels
+        this.followingLabel.setFont(new Font("Arial", 24));
+        this.newsFeedLabel.setFont(new Font("Arial", 24));
     }
 
     /**
@@ -178,31 +189,30 @@ public class UserControlPanel
     //Sets the position of the widgets in the layout
     private void setWidgetPosition()
     {
+
+        //Follow Button and Follow Text Area
+        followButton.setLayoutX(50);
+        followButton.setLayoutY(0);
+        followIDTextArea.setLayoutX(50);
+        followIDTextArea.setLayoutY(50);
+
         //List View Of all the users the current user is following
         followingLabel.setLayoutX(50);
-        followingLabel.setLayoutY(20);
+        followingLabel.setLayoutY(150);
         usersFollowing.setLayoutX(50);
-        usersFollowing.setLayoutY(50);
+        usersFollowing.setLayoutY(200);
 
+        //Tweet Button and Tweet Text Area
+        tweetButton.setLayoutX(350);
+        tweetButton.setLayoutY(0);
+        tweetTextArea.setLayoutX(350);
+        tweetTextArea.setLayoutY(50);
 
         //List View of all the news feed from the users the current user is following
         newsFeedLabel.setLayoutX(350);
-        newsFeedLabel.setLayoutY(20);
+        newsFeedLabel.setLayoutY(150);
         newsFeed.setLayoutX(350);
-        newsFeed.setLayoutY(50);
-
-        //Tweet Button and Tweet Text Area
-        tweetTextArea.setLayoutX(50);
-        tweetTextArea.setLayoutY(500);
-        tweetButton.setLayoutX(50);
-        tweetButton.setLayoutY(470);
-
-
-        //Follow Button and Follow Text Area
-        followIDTextArea.setLayoutX(550);
-        followIDTextArea.setLayoutY(500);
-        followButton.setLayoutX(550);
-        followButton.setLayoutY(470);
+        newsFeed.setLayoutY(200);
 
     }
 

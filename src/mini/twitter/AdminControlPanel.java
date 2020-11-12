@@ -74,9 +74,14 @@ public class AdminControlPanel extends Application
         //Initially The Currently Selected Item is the Root
         //It When No Item is Selected it will default to the Root
         this.currentSelectedUserGroup = this.root;
-
         this.currentSelectedUser = null; //Initially Null
 
+        //Adding the prompts for the Text Areas
+        this.userIdTextArea.setPromptText("Enter User To Add");
+        this.groupIdTextArea.setPromptText("Enter Group To Add ");
+
+        //Setting the Size of all Widgets in the layout
+        this.setWidgetSize();
     }
 
 
@@ -181,7 +186,7 @@ public class AdminControlPanel extends Application
         });
 
 
-        Scene scene = new Scene(layout, 800, 800);
+        Scene scene = new Scene(layout, 800, 450);
         stage.setTitle("Admin Panel");
         stage.setScene(scene);
         stage.show();
@@ -224,29 +229,42 @@ public class AdminControlPanel extends Application
         tree.setLayoutY(0);
 
         userIdTextArea.setLayoutX(400);
-        userIdTextArea.setLayoutY(100);
+        userIdTextArea.setLayoutY(0);
         addUserButton.setLayoutX(600);
-        addUserButton.setLayoutY(100);
+        addUserButton.setLayoutY(0);
 
         groupIdTextArea.setLayoutX(400);
-        groupIdTextArea.setLayoutY(200);
+        groupIdTextArea.setLayoutY(50);
         addGroupButton.setLayoutX(600);
-        addGroupButton.setLayoutY(200);
+        addGroupButton.setLayoutY(50);
 
         openUserViewButton.setLayoutX(400);
-        openUserViewButton.setLayoutY(300);
+        openUserViewButton.setLayoutY(150);
 
         showUserTotalButton.setLayoutX(400);
-        showUserTotalButton.setLayoutY(500);
+        showUserTotalButton.setLayoutY(250);
 
-        showGroupTotalButton.setLayoutX(600);
-        showGroupTotalButton.setLayoutY(500);
+        showGroupTotalButton.setLayoutX(550);
+        showGroupTotalButton.setLayoutY(250);
 
         showMessageTotalButton.setLayoutX(400);
-        showMessageTotalButton.setLayoutY(600);
+        showMessageTotalButton.setLayoutY(300);
 
-        showPositivePercentageButton.setLayoutX(600);
-        showPositivePercentageButton.setLayoutY(600);
+        showPositivePercentageButton.setLayoutX(550);
+        showPositivePercentageButton.setLayoutY(300);
     }
+    /**
+     * Defines the Size Of all the Widgets in the Layout
+     * */
+    private void setWidgetSize()
+    {
+        addUserButton.setMinSize(100, 50);
+        addGroupButton.setMinSize(100,50);
+        openUserViewButton.setMinSize(300,50);
+        showUserTotalButton.setMinSize(150,50);
+        showGroupTotalButton.setMinSize(150,50);
+        showMessageTotalButton.setMinSize(150,50);
+        showPositivePercentageButton.setMinSize(150,50);
 
+    }
 }
