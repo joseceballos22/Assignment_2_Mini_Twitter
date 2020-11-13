@@ -24,6 +24,8 @@ public class AdminControlPanelSingleton
 
     private HashMap<String, UserControlPanel> userControlPanels; //Used to keep a reference of all UserControlPanels Created
 
+    private ArrayList<String> messages; //List of all the Messages in the program
+
     /**SingleTon Stuff*/
     private static AdminControlPanelSingleton firstInstance = null; //Initially Null
 
@@ -33,6 +35,7 @@ public class AdminControlPanelSingleton
         this.users = new ArrayList<>();
         this.userGroups = new ArrayList<>();
         this.userControlPanels = new HashMap<>();
+        this.messages = new ArrayList<>();
     }
 
     //Returns the Only Instance of the Admin Panel Since it Incorporates the Singleton Desing Pattern
@@ -119,7 +122,9 @@ public class AdminControlPanelSingleton
     }
 
     /**
-     * Method Which returns the ArrayList of the Users Deep Copied
+     * Method Which returns the ArrayList of the Users
+     * Deep Copied
+     * @return ArrayList<User>
      * */
     public ArrayList<User> getUsers()
     {
@@ -132,6 +137,25 @@ public class AdminControlPanelSingleton
         //Deep copying
         return toReturn;
     }
+
+    /**
+     * Method Which returns the ArrayList of the User Groups
+     * Deep Copied
+     * @return ArrayList<UserGroup>
+     *
+     * */
+    public ArrayList<UserGroup> getUserGroups()
+    {
+        ArrayList<UserGroup> toReturn = new ArrayList<>();
+
+        for(UserGroup e : this.userGroups)
+        {
+            toReturn.add(e);
+        }
+        return toReturn;
+    }
+
+
 
     /**
      * Method which adds a UserControlPanel to the HashMap
@@ -153,6 +177,24 @@ public class AdminControlPanelSingleton
             return null;
         }
         return this.userControlPanels.get(name);
+    }
+
+    /**
+     * Method Which Adds a Message To the message ArrayList
+     * @return void
+     * */
+    public void addMessage(String message)
+    {
+        this.messages.add(message);
+    }
+
+    /**
+     * Method Which Returns A List of all the Messages in the Program
+     * @return ArrayList<String>
+     * */
+    public ArrayList<String> getMessages()
+    {
+        return this.messages;
     }
 
 }

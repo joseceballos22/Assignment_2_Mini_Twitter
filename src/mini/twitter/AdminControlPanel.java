@@ -43,6 +43,7 @@ public class AdminControlPanel extends Application
 
     private AdminControlPanelSingleton adminSingleton = AdminControlPanelSingleton.getInstance(); // Getting a reference to the singleton
 
+    private SystemVisitor visitor;
 
     /**Private Static Final Fields */
     private static final String USER_GROUP = "**";
@@ -82,6 +83,8 @@ public class AdminControlPanel extends Application
 
         //Setting the Size of all Widgets in the layout
         this.setWidgetSize();
+
+        this.visitor = new SystemVisitor();
     }
 
 
@@ -185,6 +188,27 @@ public class AdminControlPanel extends Application
 
         });
 
+        //Checking if the Show User Total Button Was Pressed
+        showUserTotalButton.setOnAction(e ->{
+            User temp = new User("");
+            AlertBox.display("AlertBox", Integer.toString((int)temp.accept(this.visitor)));
+        });
+
+        //Checking if the Show Group Total Button was pressed
+        showGroupTotalButton.setOnAction(e->{
+            UserGroup temp = new UserGroup("");
+            AlertBox.display("AlertBox", Integer.toString((int)temp.accept(this.visitor)));
+        });
+
+        //Checking if the Show Message Total Button Was Pressed
+        showMessageTotalButton.setOnAction(e->{
+            AlertBox.display("AlertBox", Integer.toString((int)visitor.visit(adminSingleton.getMessages())));
+        });
+
+        //Checking if the Show Positive Percentage Button Was Pressed
+        showPositivePercentageButton.setOnAction(e->{
+            AlertBox.display("AlertBox", Double.toString(visitor.visit()) + "%");
+        });
 
         Scene scene = new Scene(layout, 800, 450);
         stage.setTitle("Admin Panel");

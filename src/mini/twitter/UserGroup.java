@@ -11,7 +11,7 @@ import java.util.UUID;
 
 //Implementing the UserComponent Interface to use the composite pattern
 
-public class UserGroup implements UserComponent
+public class UserGroup implements UserComponent, Visitable
 {
     //Every User Group will have a name
     private String name;
@@ -60,4 +60,15 @@ public class UserGroup implements UserComponent
         return this.name;
     }
 
+    /**
+     * Returns the Correct output based on the visitor
+     *
+     * @param vistor
+     * @return double
+     */
+    @Override
+    public double accept(Visitor vistor)
+    {
+        return vistor.visit((UserGroup) this);
+    }
 }

@@ -19,7 +19,7 @@ import java.util.UUID;
  * So that everytime something gets changed in here it updates all of its observers which are also Users
  * */
 
-public class User implements UserComponent, Observer, Subject
+public class User implements UserComponent, Observer, Subject, Visitable
 {
     //Every User has a Unique ID
     private UUID id;
@@ -246,4 +246,15 @@ public class User implements UserComponent, Observer, Subject
         }
     }
 
+    /**
+     * Returns the Correct output based on the visitor
+     *
+     * @param vistor
+     * @return double
+     */
+    @Override
+    public double accept(Visitor vistor)
+    {
+        return vistor.visit((User)this);
+    }
 }

@@ -163,8 +163,8 @@ public class UserControlPanel
              * - Which should handle Updating the listView
              * */
             String tweetMessage = this.tweetTextArea.getText(); //Getting the message to tweet
-            this.user.addNews(tweetMessage); //Tweeting the Message to all the Observers of this User
-
+            this.user.addNews(this.user.getName() + " : " + tweetMessage); //Tweeting the Message to all the Observers of this User
+            this.adminSingleton.addMessage(tweetMessage);
             //Clearing the TweetTextArea After every tweet
             this.tweetTextArea.setText("");
         });
