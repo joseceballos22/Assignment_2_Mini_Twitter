@@ -1,1 +1,8 @@
-# Assignment_2_Mini_Twitter
+# Twitter Clone
+- Desktop Application
+
+### Stack
+- Java
+- JavaFx
+
+
