@@ -37,6 +37,11 @@ public class UserControlPanel
     private Label followingLabel;
     private Label newsFeedLabel;
 
+    //Creation Time Widgets
+    private Label creationTimeLabel;
+    private Label creationTime;
+
+
 
     /**Private Data Fields*/
     private User user;
@@ -65,6 +70,9 @@ public class UserControlPanel
         this.newsFeed = new ListView<>(); //List all the News Feed from Users Following
         this.newsFeedLabel = new Label("News Feed");
 
+        this.creationTimeLabel = new Label("Creation Time");
+        this.creationTime = new Label(user.getCreationTime() + "");
+
         this.user = user; //Saving a Reference to the specified User this Control Panel is Associated with
 
         this.stage = new Stage();
@@ -85,9 +93,18 @@ public class UserControlPanel
         this.tweetTextArea.setMaxSize(250,50);
         this.followIDTextArea.setMaxSize(250,50);
 
+        //Setting the Size of the Creation Time
+        this.creationTimeLabel.setMinSize(250, 50);
+        this.creationTime.setMinSize(250, 50);
+
         //Setting the Font For the Labels
         this.followingLabel.setFont(new Font("Arial", 24));
         this.newsFeedLabel.setFont(new Font("Arial", 24));
+
+        this.creationTimeLabel.setFont(new Font("Arial", 16));
+        this.creationTime.setFont(new Font("Arial", 16));
+
+
     }
 
     /**
@@ -100,7 +117,7 @@ public class UserControlPanel
 
         //Adding the Widgets to the Layout
         this.layout.getChildren().addAll(followIDTextArea,followButton,usersFollowing,tweetTextArea,
-                tweetButton, newsFeed,followingLabel,newsFeedLabel);
+                tweetButton, newsFeed,followingLabel,newsFeedLabel, creationTime, creationTimeLabel);
 
         /**
          *  Checking if the Follow User Button Was Clicked
@@ -202,6 +219,13 @@ public class UserControlPanel
         usersFollowing.setLayoutX(50);
         usersFollowing.setLayoutY(200);
 
+        //Position of the Creation Time
+        creationTimeLabel.setLayoutX(50);
+        creationTimeLabel.setLayoutY(600);
+        creationTime.setLayoutX(50);
+        creationTime.setLayoutY(650);
+
+
         //Tweet Button and Tweet Text Area
         tweetButton.setLayoutX(350);
         tweetButton.setLayoutY(0);
@@ -213,6 +237,7 @@ public class UserControlPanel
         newsFeedLabel.setLayoutY(150);
         newsFeed.setLayoutX(350);
         newsFeed.setLayoutY(200);
+
 
     }
 

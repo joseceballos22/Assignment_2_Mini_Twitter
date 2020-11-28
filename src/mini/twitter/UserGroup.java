@@ -18,6 +18,9 @@ public class UserGroup implements UserComponent, Visitable
     //Every User Group will have a Unique ID
     private String id;
 
+    //Used To Store the Time at which the User Was Created
+    private long creationTime;
+
     //Every User Group Can Contain any number of Users or User Groups
     private ArrayList<UserComponent> userComponents;
 
@@ -26,6 +29,10 @@ public class UserGroup implements UserComponent, Visitable
     {
         this.name = userGroupName;
         userComponents = new ArrayList<>(); // Initially Empty
+
+        /**Initializing the Creation Time Of the User Group*/
+        this.creationTime = System.currentTimeMillis();
+
 
         /**Initializing the User ID Based On the Name (No Spaces)*/
 
@@ -54,6 +61,13 @@ public class UserGroup implements UserComponent, Visitable
         }
 
     }
+
+    //gets the Creation Time of this User Group
+    public long getCreationTime()
+    {
+        return this.creationTime;
+    }
+
 
     //Adds a User Component to the
     public void add(UserComponent component)

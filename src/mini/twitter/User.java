@@ -26,6 +26,9 @@ public class User implements UserComponent, Observer, Subject, Visitable
     //Every User has a Array List of Users they are following
     private ArrayList<User> following;
 
+    //Used To Store the Time at which the User Was Created
+    private long creationTime;
+
     //Every User has a Array List of Users that are following this User
     private ArrayList<User> followers;
 
@@ -54,6 +57,9 @@ public class User implements UserComponent, Observer, Subject, Visitable
         this.observers = new ArrayList<>();
         this.news = "";
 
+        /**Initializing the Creation Time */
+        this.creationTime = System.currentTimeMillis();
+
         /**Initializing the User ID Based On the Name (No Spaces)*/
 
         String tempName = this.name + " "; //Adding a Space to the end of the Name to use as delimiter
@@ -80,6 +86,12 @@ public class User implements UserComponent, Observer, Subject, Visitable
             }
         }
 
+    }
+
+    //Gets the Creation Time of this User
+    public long getCreationTime()
+    {
+        return this.creationTime;
     }
 
 
