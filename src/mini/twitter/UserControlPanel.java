@@ -200,6 +200,9 @@ public class UserControlPanel
             //Updating its Last Update Time Since it Just Sent a Message
             this.updateTime(System.currentTimeMillis());
 
+            //Updating the Last User Which Did An Update
+            this.adminSingleton.setLastUpdatedUser(this.user);
+
         });
 
         //Starting the Stage
@@ -221,7 +224,7 @@ public class UserControlPanel
     {
         this.lastUpdateTime.setText(newTime + "");
     }
-    
+
 
     //Sets the position of the widgets in the layout
     private void setWidgetPosition()

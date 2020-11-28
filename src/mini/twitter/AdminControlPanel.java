@@ -38,6 +38,7 @@ public class AdminControlPanel extends Application
 
     private Button areIdsValidButton; //Used to Determine if all the IDS used in the users and groups are valid
 
+    private Button lastUpdatedUserButton; //Used to Get the Last Updated User
 
     /**Private Data Fields*/
     private TreeItem<UserComponent> currentSelectedUserGroup; //Holds the Currently Selected UserGroup
@@ -69,7 +70,7 @@ public class AdminControlPanel extends Application
         this.showGroupTotalButton = new Button("Show Group Total");
         this.showPositivePercentageButton = new Button("Show Positive Percentage");
         this.areIdsValidButton = new Button("Validate IDS");
-
+        this.lastUpdatedUserButton = new Button("Get Last Updated User");
 
         //Setting the Size of the Private Widgets
         this.tree.setPrefSize(300,400);
@@ -102,7 +103,8 @@ public class AdminControlPanel extends Application
         Pane layout = new Pane(); //Defining the Layout Of the Stage
         //Adding all the Widgets to the Layout
         layout.getChildren().addAll(tree, userIdTextArea, addUserButton, groupIdTextArea, addGroupButton,
-                openUserViewButton, showUserTotalButton, showMessageTotalButton, showGroupTotalButton, showPositivePercentageButton, areIdsValidButton);
+                openUserViewButton, showUserTotalButton, showMessageTotalButton, showGroupTotalButton, showPositivePercentageButton, areIdsValidButton,
+                lastUpdatedUserButton);
 
         //Positioning All the Widgets in the layout
         this.positionWidgets();
@@ -229,6 +231,19 @@ public class AdminControlPanel extends Application
 
         });
 
+        //Checking if the Last Updated User Button Was Pressed
+        lastUpdatedUserButton.setOnAction(e ->{
+            User lastUpdatedUser = adminSingleton.getLastUpdatedUser();
+            if(lastUpdatedUser == null)
+            {
+                AlertBox.display("AlertBox", "Error: No User Has Made an Update");
+            }
+            else
+            {
+                AlertBox.display("AlertBox", "Last Updated User: " + lastUpdatedUser.getName());
+            }
+
+        });
 
         Scene scene = new Scene(layout, 800, 450);
         stage.setTitle("Admin Panel");
@@ -335,8 +350,11 @@ public class AdminControlPanel extends Application
         showPositivePercentageButton.setLayoutX(550);
         showPositivePercentageButton.setLayoutY(300);
 
-        areIdsValidButton.setLayoutX(475);
+        areIdsValidButton.setLayoutX(400);
         areIdsValidButton.setLayoutY(350);
+
+        lastUpdatedUserButton.setLayoutX(550);
+        lastUpdatedUserButton.setLayoutY(350);
 
     }
     /**
@@ -352,6 +370,7 @@ public class AdminControlPanel extends Application
         showMessageTotalButton.setMinSize(150,50);
         showPositivePercentageButton.setMinSize(150,50);
         areIdsValidButton.setMinSize(150,50);
+        lastUpdatedUserButton.setMinSize(150, 50);
 
     }
 }

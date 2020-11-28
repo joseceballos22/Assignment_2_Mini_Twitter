@@ -26,6 +26,8 @@ public class AdminControlPanelSingleton
 
     private ArrayList<String> messages; //List of all the Messages in the program
 
+    private User lastUpdatedUser; //A Reference to the User Which Did the Last Update
+
     /**SingleTon Stuff*/
     private static AdminControlPanelSingleton firstInstance = null; //Initially Null
 
@@ -36,7 +38,23 @@ public class AdminControlPanelSingleton
         this.userGroups = new ArrayList<>();
         this.userControlPanels = new HashMap<>();
         this.messages = new ArrayList<>();
+
+        this.lastUpdatedUser = null; //Initially Null
     }
+
+    //Sets the LastUpdatedUser
+    public void setLastUpdatedUser(User newUser)
+    {
+        this.lastUpdatedUser = newUser;
+    }
+
+    //Gets the Last Updated User
+    public User getLastUpdatedUser()
+    {
+        return this.lastUpdatedUser;
+    }
+
+
 
     //Returns the Only Instance of the Admin Panel Since it Incorporates the Singleton Desing Pattern
     public static AdminControlPanelSingleton getInstance()
