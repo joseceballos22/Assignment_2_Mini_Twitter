@@ -29,6 +29,9 @@ public class User implements UserComponent, Observer, Subject, Visitable
     //Used To Store the Time at which the User Was Created
     private long creationTime;
 
+    //Used to Store the Last Updated Time of the User
+    private long lastUpdateTime;
+
     //Every User has a Array List of Users that are following this User
     private ArrayList<User> followers;
 
@@ -57,8 +60,11 @@ public class User implements UserComponent, Observer, Subject, Visitable
         this.observers = new ArrayList<>();
         this.news = "";
 
+
         /**Initializing the Creation Time */
         this.creationTime = System.currentTimeMillis();
+
+        this.lastUpdateTime = 0; //Initially Zero
 
         /**Initializing the User ID Based On the Name (No Spaces)*/
 
@@ -85,8 +91,21 @@ public class User implements UserComponent, Observer, Subject, Visitable
                 tempWord += tempName.charAt(i); //Saving the Characters
             }
         }
-
     }
+
+    //Updates the LastUpdateTime Attribute
+    public void setLastUpdateTime(long newTime)
+    {
+        this.lastUpdateTime = newTime; //Updating it
+    }
+
+    //Gets the Last Updated Time Attribute
+    public long getLastUpdateTime()
+    {
+        return this.lastUpdateTime;
+    }
+
+
 
     //Gets the Creation Time of this User
     public long getCreationTime()
@@ -249,6 +268,16 @@ public class User implements UserComponent, Observer, Subject, Visitable
             userControlPanel.addNews(newMessage); //Updating the ListView Of this User
         }
         //Else Do Nothing
+
+        /**
+         * Updating the lastUpdateTime Attribute of this User Since it Just Got a New Message
+         * - Using the AdminSingleton Reference
+         * - Only Updating the Label If the USer Control Panel Exists
+         * */
+        if(userControlPanel != null)
+        {
+            userControlPanel.updateTime(System.currentTimeMillis());
+        }
 
     }
 

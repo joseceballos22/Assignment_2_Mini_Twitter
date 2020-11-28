@@ -41,6 +41,9 @@ public class UserControlPanel
     private Label creationTimeLabel;
     private Label creationTime;
 
+    //Last Updated Time Widgets
+    private Label lastUpdateTimeLabel;
+    private Label lastUpdateTime;
 
 
     /**Private Data Fields*/
@@ -73,6 +76,9 @@ public class UserControlPanel
         this.creationTimeLabel = new Label("Creation Time");
         this.creationTime = new Label(user.getCreationTime() + "");
 
+        this.lastUpdateTimeLabel = new Label("Last Updated Time");
+        this.lastUpdateTime = new Label(user.getLastUpdateTime() + "");
+
         this.user = user; //Saving a Reference to the specified User this Control Panel is Associated with
 
         this.stage = new Stage();
@@ -93,9 +99,13 @@ public class UserControlPanel
         this.tweetTextArea.setMaxSize(250,50);
         this.followIDTextArea.setMaxSize(250,50);
 
-        //Setting the Size of the Creation Time
+        //Setting the Size of the Creation Time Widgets
         this.creationTimeLabel.setMinSize(250, 50);
         this.creationTime.setMinSize(250, 50);
+
+        //Setting the Size of the Last Updated Time Widgets
+        this.lastUpdateTimeLabel.setMinSize(250, 50);
+        this.lastUpdateTime.setMinSize(250, 50);
 
         //Setting the Font For the Labels
         this.followingLabel.setFont(new Font("Arial", 24));
@@ -104,6 +114,8 @@ public class UserControlPanel
         this.creationTimeLabel.setFont(new Font("Arial", 16));
         this.creationTime.setFont(new Font("Arial", 16));
 
+        this.lastUpdateTimeLabel.setFont(new Font("Arial", 16));
+        this.lastUpdateTime.setFont(new Font("Arial", 16));
 
     }
 
@@ -117,7 +129,7 @@ public class UserControlPanel
 
         //Adding the Widgets to the Layout
         this.layout.getChildren().addAll(followIDTextArea,followButton,usersFollowing,tweetTextArea,
-                tweetButton, newsFeed,followingLabel,newsFeedLabel, creationTime, creationTimeLabel);
+                tweetButton, newsFeed,followingLabel,newsFeedLabel, creationTime, creationTimeLabel, lastUpdateTimeLabel, lastUpdateTime);
 
         /**
          *  Checking if the Follow User Button Was Clicked
@@ -184,6 +196,10 @@ public class UserControlPanel
             this.adminSingleton.addMessage(tweetMessage);
             //Clearing the TweetTextArea After every tweet
             this.tweetTextArea.setText("");
+
+            //Updating its Last Update Time Since it Just Sent a Message
+            this.updateTime(System.currentTimeMillis());
+
         });
 
         //Starting the Stage
@@ -200,8 +216,12 @@ public class UserControlPanel
         this.newsFeed.getItems().add(newsToAdd); //Updating the News Feed
     }
 
-
-
+    /**Method Which Updates the lastUpdate Time of this User*/
+    public void updateTime(long newTime)
+    {
+        this.lastUpdateTime.setText(newTime + "");
+    }
+    
 
     //Sets the position of the widgets in the layout
     private void setWidgetPosition()
@@ -238,6 +258,11 @@ public class UserControlPanel
         newsFeed.setLayoutX(350);
         newsFeed.setLayoutY(200);
 
+        //Position For the Last Updated Widgets
+        lastUpdateTimeLabel.setLayoutX(350);
+        lastUpdateTimeLabel.setLayoutY(600);
+        lastUpdateTime.setLayoutX(350);
+        lastUpdateTime.setLayoutY(650);
 
     }
 
