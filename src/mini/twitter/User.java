@@ -22,8 +22,7 @@ import java.util.UUID;
 public class User implements UserComponent, Observer, Subject, Visitable
 {
     //Every User has a Unique ID
-    private UUID id;
-
+    private String id;
     //Every User has a Array List of Users they are following
     private ArrayList<User> following;
 
@@ -50,20 +49,39 @@ public class User implements UserComponent, Observer, Subject, Visitable
         following = new ArrayList<>();
         followers = new ArrayList<>();
         newsFeed = new ArrayList<>();
-        id = UUID.randomUUID(); //Creating a Random UUID
         this.adminSingleton = AdminControlPanelSingleton.getInstance(); //Getting a Reference to the Singleton Instance
 
         this.observers = new ArrayList<>();
         this.news = "";
 
+        /**Initializing the User ID Based On the Name (No Spaces)*/
+
+        String tempName = this.name + " "; //Adding a Space to the end of the Name to use as delimiter
+        this.id = ""; //Initially Empty
+        String tempWord = ""; //Used to Get all the Words
+
+        for(int i = 0; i < tempName.length(); i++)
+        {
+            //Found A Word
+            if(tempName.charAt(i) == ' ')
+            {
+                this.id += tempWord;
+                //Adding a UnderScore to Separate the Names
+                if(i < tempName.length() -1 )
+                {
+                    this.id += "_"; //Adding a UnderScore
+                }
+                //Resetting the tempWord
+                tempWord = "";
+            }
+            else
+            {
+                tempWord += tempName.charAt(i); //Saving the Characters
+            }
+        }
+
     }
 
-
-    //Gets the ID of the User
-    public UUID getId()
-    {
-        return this.id;
-    }
 
     //Gets the following Array list
     public ArrayList<User> getFollowing()
@@ -83,6 +101,7 @@ public class User implements UserComponent, Observer, Subject, Visitable
         return this.newsFeed;
     }
 
+    public String getId() {return this.id;}
 
     /**
      * Method Which Adds a new User that is following this User

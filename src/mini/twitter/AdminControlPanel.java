@@ -36,6 +36,8 @@ public class AdminControlPanel extends Application
     private Button showGroupTotalButton;
     private Button showPositivePercentageButton;
 
+    private Button areIdsValidButton; //Used to Determine if all the IDS used in the users and groups are valid
+
 
     /**Private Data Fields*/
     private TreeItem<UserComponent> currentSelectedUserGroup; //Holds the Currently Selected UserGroup
@@ -66,6 +68,8 @@ public class AdminControlPanel extends Application
         this.showMessageTotalButton = new Button("Show Message Total");
         this.showGroupTotalButton = new Button("Show Group Total");
         this.showPositivePercentageButton = new Button("Show Positive Percentage");
+        this.areIdsValidButton = new Button("Validate IDS");
+
 
         //Setting the Size of the Private Widgets
         this.tree.setPrefSize(300,400);
@@ -98,7 +102,7 @@ public class AdminControlPanel extends Application
         Pane layout = new Pane(); //Defining the Layout Of the Stage
         //Adding all the Widgets to the Layout
         layout.getChildren().addAll(tree, userIdTextArea, addUserButton, groupIdTextArea, addGroupButton,
-                openUserViewButton, showUserTotalButton, showMessageTotalButton, showGroupTotalButton, showPositivePercentageButton);
+                openUserViewButton, showUserTotalButton, showMessageTotalButton, showGroupTotalButton, showPositivePercentageButton, areIdsValidButton);
 
         //Positioning All the Widgets in the layout
         this.positionWidgets();
@@ -210,11 +214,65 @@ public class AdminControlPanel extends Application
             AlertBox.display("AlertBox", Double.toString(visitor.visit()) + "%");
         });
 
+        //Checking if The areIdsValidButton was Pressed
+        areIdsValidButton.setOnAction(e -> {
+            boolean isValid = this.validateIDS(); //Validates All the IDS of the Users and Groups
+
+            if(isValid)
+            {
+                AlertBox.display("AlertBox" , "All Users and User Group IDS Are Valid ");
+            }
+            else
+            {
+                AlertBox.display("AlertBox", "\t\tError:\n\nUsers Or User Group Ids Are Not Valid\n\n\t***They Contain Spaces***");
+            }
+
+        });
+
+
         Scene scene = new Scene(layout, 800, 450);
         stage.setTitle("Admin Panel");
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * Validates All the IDS of the Users and User Groups Are Returns True if they are ALL Valid
+     * Else Returns False if One or More are Invalid
+     *
+     * */
+    private boolean validateIDS()
+    {
+        /**Getting all the Users and User Groups Currently In the Program */
+        ArrayList<User> users = this.adminSingleton.getUsers();
+        ArrayList<UserGroup> userGroups = this.adminSingleton.getUserGroups();
+        /**Since we Already Validate If the User / UserGroups Are duplicate when adding them */
+        /**All We have to check for is if their IDS Contain Spaces*/
+
+
+        //Checking if Any User Contains a ID with a Space
+        for(User u : users)
+        {
+            //If it contains a Space
+            if(u.getName().contains(" "))
+            {
+                return false; //Not Valid
+            }
+        }
+        //Checking if Any User Group Contains a ID with a Space
+        for(UserGroup ug : userGroups)
+        {
+            if(ug.getName().contains(" "))
+            {
+                return false; //Not Valid
+            }
+        }
+
+
+        return true; //VALID
+    }
+
+
 
     /**
      * Private Helper Method Which Adds Users To the Tree View
@@ -276,6 +334,10 @@ public class AdminControlPanel extends Application
 
         showPositivePercentageButton.setLayoutX(550);
         showPositivePercentageButton.setLayoutY(300);
+
+        areIdsValidButton.setLayoutX(475);
+        areIdsValidButton.setLayoutY(350);
+
     }
     /**
      * Defines the Size Of all the Widgets in the Layout
@@ -289,6 +351,7 @@ public class AdminControlPanel extends Application
         showGroupTotalButton.setMinSize(150,50);
         showMessageTotalButton.setMinSize(150,50);
         showPositivePercentageButton.setMinSize(150,50);
+        areIdsValidButton.setMinSize(150,50);
 
     }
 }

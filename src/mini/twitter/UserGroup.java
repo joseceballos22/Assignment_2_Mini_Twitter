@@ -16,7 +16,8 @@ public class UserGroup implements UserComponent, Visitable
     //Every User Group will have a name
     private String name;
     //Every User Group will have a Unique ID
-    private UUID id;
+    private String id;
+
     //Every User Group Can Contain any number of Users or User Groups
     private ArrayList<UserComponent> userComponents;
 
@@ -24,8 +25,34 @@ public class UserGroup implements UserComponent, Visitable
     public UserGroup(String userGroupName)
     {
         this.name = userGroupName;
-        id = UUID.randomUUID(); //Randomly selecting a UUID
         userComponents = new ArrayList<>(); // Initially Empty
+
+        /**Initializing the User ID Based On the Name (No Spaces)*/
+
+        String tempName = this.name + " "; //Adding a Space to the end of the Name to use as delimiter
+        this.id = ""; //Initially Empty
+        String tempWord = ""; //Used to Get all the Words
+
+        for(int i = 0; i < tempName.length(); i++)
+        {
+            //Found A Word
+            if(tempName.charAt(i) == ' ')
+            {
+                this.id += tempWord;
+                //Adding a UnderScore to Separate the Names
+                if(i < tempName.length() -1 )
+                {
+                    this.id += "_"; //Adding a UnderScore
+                }
+                //Resetting the tempWord
+                tempWord = "";
+            }
+            else
+            {
+                tempWord += tempName.charAt(i); //Saving the Characters
+            }
+        }
+
     }
 
     //Adds a User Component to the
@@ -41,19 +68,9 @@ public class UserGroup implements UserComponent, Visitable
         return this.name;
     }
 
-/*    //Displays the User Group Information
-    @Override
-    public String display() {
-        String answer = this.name + "\n"; //First element to display is the name of the User Group
+    //Returns the Id
+    public String getId() {return this.id;}
 
-        //Next Displaying all the UserComponents in the UserGroup
-        for(UserComponent element : userComponents)
-        {
-            answer += element.display();
-        }
-
-        return answer;
-    }*/
     @Override
     public String toString()
     {
